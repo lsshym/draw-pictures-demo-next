@@ -1,0 +1,13 @@
+.layer-demo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+  .data-view {
+    margin-left: 20px;
+    width: 300px;
+    border: 1px solid;
+    height: 600px;
+    display: flex;
+  }
+}

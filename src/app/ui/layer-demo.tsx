@@ -1,54 +1,74 @@
 "use client";
-import { Button, Upload } from "antd";
-import React, { FunctionComponent, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { LayerTypeEnum } from "./preview-module/previewLayers";
+import "./layer-demo.scss";
+import React, {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState,
+} from "react";
 import PreviewModule from "./preview-module/views/PreviewModule";
-import { RootState } from "@/redux/store";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { initPreviewLayer, selectLayers } from "@/redux/previewModuleSlice";
+import {
+  initPreviewLayer,
+  selectLayers,
+  updateLayersData,
+} from "@/redux/previewModuleSlice";
+import {
+  bgPitcureListData,
+  demoData,
+  figureAvatarListData,
+  topIconListData,
+} from "./menu-list/layerDemoData";
+import MenuList from "./menu-list/menu-list";
+import IconList from "./IconList/IconList";
+import { produce } from "immer";
+import { LayerTypeEnum } from "./preview-module/previewLayers";
 
 interface LayerDemoProps {}
 
+enum DataOperate {
+  EDIT_BYNAME = "EDIT_BYNAME",
+  INIT_DATA = "INIT_DATA",
+}
+
 const LayerDemo: FunctionComponent<LayerDemoProps> = () => {
   const previewLayersData = useAppSelector(selectLayers);
-  const demoData = [
-    // 因为要在多个选项页里配置同一个菜单，所以有多个对象，最后会显示全部配置
-    {
-      name: "debug1",
-      data: {
-        figureAvatar: {
-          layerType: LayerTypeEnum.figureAvatar,
-          value:
-            "https://img0.baidu.com/it/u=2588759194,769856364&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=786",
-          style: {
-            top: "124px",
-          },
-        },
-        bgPitcure: {
-          layerType: LayerTypeEnum.bgPitcure,
-          value:
-            "https://img1.baidu.com/it/u=241649533,64972487&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750",
-        },
-      },
-    },
-    {
-      name: "debug2",
-      data: {
-        topIcon: {
-          layerType: LayerTypeEnum.topIcon,
-          value:
-            "https://img.iplaysoft.com/wp-content/uploads/2019/free-images/free_stock_photo.jpg",
-        },
-        bgPitcure: {
-          layerType: LayerTypeEnum.bgPitcure,
-          value:
-            "https://img1.baidu.com/it/u=241649533,64972487&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750",
-        },
-      },
-    },
-  ];
+  console.log('previewLayersData',previewLayersData)
   const reduxcDispatch = useAppDispatch();
+  const layerDataReducer = useCallback((state, action) => {
+    const { name = "", value, index } = action;
+    switch (action.type) {
+      case DataOperate.EDIT_BYNAME:
+        return produce(state, (draft) => {
+          if (Object.prototype.toString.call(value) === "[object Object]") {
+            for (let key in value) {
+              draft[index].data[name][key] = value[key];
+            }
+          } else {
+            draft[index].data[name] = value;
+          }
+        });
+      case DataOperate.INIT_DATA:
+        return (state = value);
+      default:
+        return state;
+    }
+  }, []);
+  const [layerData, layerDataDispatch] = useReducer(layerDataReducer, demoData);
+  const menuListData = useMemo(
+    () =>
+      layerData.map((i) => {
+        return { name: i.name, id: i.id };
+      }),
+    [layerData]
+  );
+  const [menuListActiveId, setMenuListActiveId] = useState(layerData[0].id);
+  const currentMenu = useMemo(
+    () => layerData.find((item) => item.id === menuListActiveId),
+    [menuListActiveId, layerData]
+  );
   useEffect(() => {
     reduxcDispatch(
       initPreviewLayer({
@@ -56,21 +76,85 @@ const LayerDemo: FunctionComponent<LayerDemoProps> = () => {
       } as any)
     );
   }, []);
-  // reduxcDispatch(
-  //     updateLayersData({
-  //         type: "",
-  //         value: "",
-  //     })
-  // );
+  const topIconOnClick = (value) => {
+    layerDataDispatch({
+      type: DataOperate.EDIT_BYNAME,
+      index: currentMenu.id,
+      name: "topIcon",
+      value: {
+        value: value.url,
+      },
+    });
+    reduxcDispatch(
+      updateLayersData({
+        type: LayerTypeEnum.topIcon,
+        value: value.url,
+      } as any)
+    );
+  };
+  const bgOnClick = (value) => {
+    layerDataDispatch({
+      type: DataOperate.EDIT_BYNAME,
+      index: currentMenu.id,
+      name: "bgPitcure",
+      value: {
+        value: value.url,
+      },
+    });
+    reduxcDispatch(
+      updateLayersData({
+        type: LayerTypeEnum.bgPitcure,
+        value: value.url,
+      } as any)
+    );
+  };
+ 
+  const figureOnClick = (value) => {
+    layerDataDispatch({
+      type: DataOperate.EDIT_BYNAME,
+      index: currentMenu.id,
+      name: "figureAvatar",
+      value: {
+        value: value.url,
+      },
+    });
+    reduxcDispatch(
+      updateLayersData({
+        type: LayerTypeEnum.figureAvatar,
+        value: value.url,
+      } as any)
+    );
+  };
   return (
-    <div>
+    <div className="layer-demo">
       <div className="layer">
         <PreviewModule layers={previewLayersData}></PreviewModule>
       </div>
-      <div>
-        <Upload>
-          <Button>Click to Upload</Button>
-        </Upload>
+      <div className="data-view">
+        <MenuList
+          list={menuListData}
+          menuListActiveId={menuListActiveId}
+          onClick={setMenuListActiveId}
+        ></MenuList>
+        <div className="">
+          {currentMenu.name === "场景" ? (
+            <div>
+              <IconList
+                dataList={topIconListData}
+                onClick={topIconOnClick}
+              ></IconList>
+              <IconList
+                dataList={bgPitcureListData}
+                onClick={bgOnClick}
+              ></IconList>
+            </div>
+          ) : (
+            <IconList
+              dataList={figureAvatarListData}
+              onClick={figureOnClick}
+            ></IconList>
+          )}
+        </div>
       </div>
     </div>
   );

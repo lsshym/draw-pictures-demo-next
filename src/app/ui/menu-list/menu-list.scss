@@ -1,0 +1,9 @@
+.menu-list {
+  width: 100px;
+  border: 1px solid;
+  .list-item {
+    &.active {
+      background: red;
+    }
+  }
+}
