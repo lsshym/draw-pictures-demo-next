@@ -35,7 +35,7 @@ enum DataOperate {
 
 const LayerDemo: FunctionComponent<LayerDemoProps> = () => {
   const previewLayersData = useAppSelector(selectLayers);
-  console.log('previewLayersData',previewLayersData)
+  console.log("previewLayersData", previewLayersData);
   const reduxcDispatch = useAppDispatch();
   const layerDataReducer = useCallback((state, action) => {
     const { name = "", value, index } = action;
@@ -108,7 +108,7 @@ const LayerDemo: FunctionComponent<LayerDemoProps> = () => {
       } as any)
     );
   };
- 
+
   const figureOnClick = (value) => {
     layerDataDispatch({
       type: DataOperate.EDIT_BYNAME,
@@ -125,6 +125,36 @@ const LayerDemo: FunctionComponent<LayerDemoProps> = () => {
       } as any)
     );
   };
+  const menuListView = (name) => {
+    console.log(name);
+    let el;
+    switch (name) {
+      case "背景":
+        el = (
+          <IconList dataList={bgPitcureListData} onClick={bgOnClick}></IconList>
+        );
+        break;
+      case "顶部图":
+        el = (
+          <IconList
+            dataList={topIconListData}
+            onClick={topIconOnClick}
+          ></IconList>
+        );
+        break;
+      case "人物":
+        el = (
+          <IconList
+            dataList={figureAvatarListData}
+            onClick={figureOnClick}
+          ></IconList>
+        );
+        break;
+      default:
+        break;
+    }
+    return el;
+  };
   return (
     <div className="layer-demo">
       <div className="layer">
@@ -136,25 +166,7 @@ const LayerDemo: FunctionComponent<LayerDemoProps> = () => {
           menuListActiveId={menuListActiveId}
           onClick={setMenuListActiveId}
         ></MenuList>
-        <div className="">
-          {currentMenu.name === "场景" ? (
-            <div>
-              <IconList
-                dataList={topIconListData}
-                onClick={topIconOnClick}
-              ></IconList>
-              <IconList
-                dataList={bgPitcureListData}
-                onClick={bgOnClick}
-              ></IconList>
-            </div>
-          ) : (
-            <IconList
-              dataList={figureAvatarListData}
-              onClick={figureOnClick}
-            ></IconList>
-          )}
-        </div>
+        <div className="">{menuListView(currentMenu.name)}</div>
       </div>
     </div>
   );
