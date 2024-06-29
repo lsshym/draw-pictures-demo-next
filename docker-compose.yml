@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  web:
+    # 修改为你的 Docker Hub 用户名和仓库名
+    image: lsshym9/draw-pitcure-test:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - web
