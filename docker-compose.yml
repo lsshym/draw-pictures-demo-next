@@ -2,8 +2,8 @@ version: '3'
 
 services:
   web:
-    # 修改为你的 Docker Hub 用户名和仓库名
-    image: lsshym9/draw-pitcure-test:latest
+    # 修改为你的阿里云镜像仓库地址
+    image: registry.cn-hangzhou.aliyuncs.com/lsshym/draw-pictures-demo-next:latest
     build:
       context: .
       dockerfile: Dockerfile
