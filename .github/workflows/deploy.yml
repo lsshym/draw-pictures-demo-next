@@ -39,7 +39,7 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }} # 你的 SSH 用户名
         key: ${{ secrets.SERVER_SSH_KEY }} # 用于连接服务器的私钥
         script: |
-          cd /home/keni # 修改为你的项目路径
+          cd /home/keni/draw-pictures-demo-next # 修改为你的项目路径
           docker-compose down
           docker-compose pull
           docker-compose up -d
