@@ -19,7 +19,7 @@ jobs:
       - name: Configure Docker with Alibaba Cloud Mirror
         run: |
           sudo mkdir -p /etc/docker
-          echo '{"registry-mirrors": ["https://<your-accelerator>.mirror.aliyuncs.com"]}' | sudo tee /etc/docker/daemon.json
+          echo '{"registry-mirrors": ["https://rdm6ojp5.mirror.aliyuncs.com"]}' | sudo tee /etc/docker/daemon.json
           sudo systemctl daemon-reload
           sudo systemctl restart docker
 
