@@ -25,6 +25,7 @@ import MenuList from "./menu-list/menu-list";
 import IconList from "./IconList/IconList";
 import { produce } from "immer";
 import { LayerTypeEnum } from "./preview-module/previewLayers";
+import { Button } from "antd";
 
 interface LayerDemoProps {}
 
@@ -155,6 +156,7 @@ const LayerDemo: FunctionComponent<LayerDemoProps> = () => {
     }
     return el;
   };
+
   return (
     <div className="layer-demo">
       <div className="layer">

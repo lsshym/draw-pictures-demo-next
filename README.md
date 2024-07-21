@@ -1,36 +1,13 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+### 项目说明
 
-## Getting Started
 
-First, run the development server:
+第一点，我数据要怎么搞，假设我有一个演播厅，有第一幕第二幕，这个数据我嵌套了很多层，但是我要画图的话，这种数据基本没法用，
+<!-- 也不能说没法用，我当初是想仿照vue做proxy绑定，我改了数据自动去更新图层，但是考虑一个时间问题，我没做，这个项目我领导是让我三周连开发带上线， -->
+画图的话它其实根本不关心你数据有几层，我只需要把图片提出来然后想办法叠就行了。所以说在初始化图层数据的时候要做一个转换，我在初始化的时候把人物，背景，添加标识，之后去遍历把带标记的数据提出来转化成一个一维数组，现在我知道哪些数据要画了。
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+第二点就是怎么画就是怎么展示
+大概思路现在我有几张图片，把图片通过css叠起来。然后就是我要怎么分别来画人物和背景，人物和背景的css代码肯定是不一样的，之前说过数据里面有标识，所以在这时候我肯定是能在代码层面区分，我把这个一维数组传入一个专门的组件，通过Switch加标识，返回不同的dom片段
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+第三点就是数据怎么维护
+我要展示的地方只有一个，但是可以改的地方有很多，所以最开始画图就是用redux做的。
+现在假设我有两个场景，第一个场景是演播室，第二个是户外直播。我在创建和切换的时候我不可能去手动的一个人物一个背景的去创建，直接去创建两个class，第一个就比如说自带演播背景，第二个是户外背景。然后再创建一堆子class，把人物背景这种全部包装一下，之后如果我要做单人转双人也可以做到。这是一些基本的数据定义。改数据的话其实现在做成这样不算复杂，改原始数据的话直接改就行了，然后再去单独修改图层数据，通过索引可以直接定位到。
