@@ -25,7 +25,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: registry.cn-hangzhou.aliyuncs.com/lsshym/docker-images-lssh:latest # 修改为你的阿里云镜像仓库地址
+          tags: registry.cn-hangzhou.aliyuncs.com/lsshym/draw-pictures-demo-next:latest # 修改为你的阿里云镜像仓库地址
 
   deploy:
     runs-on: ubuntu-latest
