@@ -3,7 +3,7 @@ version: '3'
 services:
   web:
     # 修改为你的阿里云镜像仓库地址
-    image: registry.cn-hangzhou.aliyuncs.com/lsshym/draw-pictures-demo-next:latest
+    image: registry.cn-hangzhou.aliyuncs.com/lsshym/docker-images-lssh:latest
     build:
       context: .
       dockerfile: Dockerfile
