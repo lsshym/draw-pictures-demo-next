@@ -3,7 +3,7 @@ name: CI/CD
 on:
   push:
     branches:
-      - master # 修改为你要触发 CI/CD 的分支名称
+      - master # 修改为你要触发 CI/CD 的分支
 
 jobs:
   build:
