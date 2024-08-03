@@ -53,7 +53,9 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 
 # 复制构建后的文件到nginx目录
-COPY --from=base /app/build .
+# COPY --from=base /app/build .
+COPY --from=base /app/.next .
+
 
 # 复制nginx配置文件
 COPY nginx.conf /etc/nginx/nginx.conf
