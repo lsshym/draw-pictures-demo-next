@@ -45,4 +45,4 @@ jobs:
             docker pull registry.cn-hangzhou.aliyuncs.com/docker-images-lssh/draw-pictures-demo-next:latest
             docker stop draw-pictures-demo-next || true
             docker rm draw-pictures-demo-next || true
-            docker run -d --name draw-pictures-demo-next -p 80:80 registry.cn-hangzhou.aliyuncs.com/docker-images-lssh/draw-pictures-demo-next:${{ github.sha }}
+            docker run -d --name draw-pictures-demo-next -p 80:80 registry.cn-hangzhou.aliyuncs.com/docker-images-lssh/draw-pictures-demo-next:laster
