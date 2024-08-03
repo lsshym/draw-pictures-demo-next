@@ -11,7 +11,7 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn\/ubuntu/g' /etc/apt/sources
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 # 安装Node.js
-RUN NODE_VERSION="v18.12.1" && \
+RUN NODE_VERSION="v18.17.0" && \
     NODE_OS_ARCH="linux-x64" && \
     curl -fsSL https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/${NODE_VERSION}/node-${NODE_VERSION}-${NODE_OS_ARCH}.tar.gz -o node.tar.gz && \
     tar -xzf node.tar.gz -C /usr/local --strip-components=1 && \
