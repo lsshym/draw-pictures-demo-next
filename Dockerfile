@@ -19,7 +19,7 @@ RUN NODE_VERSION="v18.12.1" && \
     npm config set registry https://registry.npmmirror.com
 
 # 设置环境变量
-ENV PATH /usr/local/bin:$PATH
+ENV PATH=/usr/local/bin:$PATH
 
 # 创建和设置工作目录
 WORKDIR /app
