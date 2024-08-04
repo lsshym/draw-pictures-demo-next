@@ -42,7 +42,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }} # 你的 SSH 用户名
           key: ${{ secrets.SERVER_SSH_KEY }} # 用于连接服务器的私钥
           script: |
-            docker pull registry.cn-hangzhou.aliyuncs.com/docker-images-lssh/draw-pictures-demo-next:latest
-            docker stop draw-pictures-demo-next || true
-            docker rm draw-pictures-demo-next || true
-            docker run -d --name draw-pictures-demo-next -p 80:80 registry.cn-hangzhou.aliyuncs.com/docker-images-lssh/draw-pictures-demo-next:latest
+            cd /home/keni/draw-pictures-demo-next
+            docker-compose pull
+            docker-compose down
+            docker-compose up -d
