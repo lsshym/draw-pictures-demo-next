@@ -34,7 +34,7 @@ RUN sed -i 3d /app/package.json && \
 
 # 复制所有文件并构建项目
 COPY . .
-RUN npm run build
+RUN npm run export
 
 # 生产镜像，使用nginx:alpine
 FROM nginx:alpine
@@ -54,7 +54,8 @@ RUN rm -rf ./*
 
 # 复制构建后的文件到nginx目录
 # COPY --from=base /app/build .
-COPY --from=base /app/.next .
+COPY --from=base /app/out .
+# COPY --from=base /app/.next .
 
 
 # 复制nginx配置文件
