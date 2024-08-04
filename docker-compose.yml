@@ -1,11 +1,11 @@
-version: '3.8'
+version: "3.8"
 
 services:
   web:
-    image: your-web-image
+    image: registry.cn-hangzhou.aliyuncs.com/docker-images-lssh/draw-pictures-demo-next:latest
     container_name: web
     ports:
-      - "3000:3000"  # 修改为 Web 服务实际使用的端口
+      - "3000:3000" # 修改为 Web 服务实际使用的端口
     networks:
       - my-network
 
