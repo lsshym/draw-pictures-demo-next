@@ -53,7 +53,6 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 
 # 复制构建后的文件到nginx目录
-# COPY --from=base /app/build .
 COPY --from=base /app/out .
 # COPY --from=base /app/.next .
 
