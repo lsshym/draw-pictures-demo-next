@@ -26,7 +26,13 @@ jobs:
       # 需要在secrets中添加阿里账号密码，登录
       - name: Login to Alibaba Cloud
         run: docker login --username=${{ secrets.ALIYUN_USERNAME }} --password=${{ secrets.ALIYUN_PASSWORD }} ${{ env.REGISTRY }}
-
+      - name: Tag old latest image with timestamp
+        run: |
+          OLD_IMAGE_ID=$(docker images ${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ github.event.repository.name }}-image:latest --format "{{.ID}}")
+          if [ -n "$OLD_IMAGE_ID" ]; then
+            TIMESTAMP=$(date +%Y%m%d%H%M%S)
+            docker tag $OLD_IMAGE_ID ${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ github.event.repository.name }}-image:$TIMESTAMP
+          fi
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
@@ -35,22 +41,6 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ github.event.repository.name }}-image:latest # 使用项目名称作为镜像名
 
-      - name: Cleanup old images
-        run: |
-          echo "Checking for old images in repository ${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ github.event.repository.name }}-image"
-          REPO="${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ github.event.repository.name }}-image"
-          KEEP_TAG="latest"
-          OLD_IMAGES=$(docker images $REPO --format "{{.ID}} {{.Tag}}" | grep -v "$KEEP_TAG" | awk '{print $1}')
-          if [ -z "$OLD_IMAGES" ]; then
-            echo "No old images found."
-          else
-            echo "Old images found: $OLD_IMAGES"
-            for IMAGE in $OLD_IMAGES
-            do
-              echo "Deleting image $IMAGE"
-              docker rmi $IMAGE || true
-            done
-          fi
 
   deploy:
     runs-on: ubuntu-latest
