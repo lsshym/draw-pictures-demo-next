@@ -37,16 +37,20 @@ jobs:
 
       - name: Cleanup old images
         run: |
+          echo "Checking for old images in repository ${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ github.event.repository.name }}-image"
           REPO="${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ github.event.repository.name }}-image"
           KEEP_TAG="latest"
           OLD_IMAGES=$(docker images $REPO --format "{{.ID}} {{.Tag}}" | grep -v "$KEEP_TAG" | awk '{print $1}')
-          for IMAGE in $OLD_IMAGES
-          do
-            echo "Tagging old image $IMAGE as backup"
-            docker tag $IMAGE $REPO:backup-$(date +%Y%m%d%H%M%S)
-            echo "Deleting old image $IMAGE"
-            docker rmi $IMAGE
-          done
+          if [ -z "$OLD_IMAGES" ]; then
+            echo "No old images found."
+          else
+            echo "Old images found: $OLD_IMAGES"
+            for IMAGE in $OLD_IMAGES
+            do
+              echo "Deleting image $IMAGE"
+              docker rmi $IMAGE || true
+            done
+          fi
 
   deploy:
     runs-on: ubuntu-latest
