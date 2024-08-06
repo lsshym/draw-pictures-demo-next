@@ -7,8 +7,7 @@ on:
 
 env:
   REGISTRY: registry.cn-hangzhou.aliyuncs.com # 定义阿里云镜像仓库地址，可改成别的，如ghcr.io
-  WEBSITE_IMAGE: registry.cn-hangzhou.aliyuncs.com/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/website # 定义网站镜像的名称，转换为小写
-  NGINX_IMAGE: registry.cn-hangzhou.aliyuncs.com/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/nginx # 定义 NGINX 镜像的名称，转换为小写
+  NAMESPACE: docker-images-lssh # 命名空间
 
 jobs:
   build:
@@ -24,7 +23,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-        # 需要在secrets中添加阿里账号密码，登录
+      # 需要在secrets中添加阿里账号密码，登录
       - name: Login to Alibaba Cloud
         run: docker login --username=${{ secrets.ALIYUN_USERNAME }} --password=${{ secrets.ALIYUN_PASSWORD }} ${{ env.REGISTRY }}
 
@@ -34,7 +33,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/docker-images-lssh/draw-pictures-demo-next:latest # 修改为你的阿里云镜像仓库地址
+          tags: ${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ github.event.repository.name }}-image:latest # 使用项目名称作为镜像名
 
   deploy:
     runs-on: ubuntu-latest
@@ -48,7 +47,19 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }} # 你的 SSH 用户名
           key: ${{ secrets.SERVER_SSH_KEY }} # 用于连接服务器的私钥
           script: |
-            docker pull registry.cn-hangzhou.aliyuncs.com/docker-images-lssh/draw-pictures-demo-next:latest
-            docker stop draw-pictures-demo-next || true
-            docker rm draw-pictures-demo-next || true
-            docker run -d --name draw-pictures-demo-next -p 80:80 registry.cn-hangzhou.aliyuncs.com/docker-images-lssh/draw-pictures-demo-next:latest
+            docker pull ${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ github.event.repository.name }}-image:latest
+            docker stop ${{ github.event.repository.name }}-container || true
+            docker rm ${{ github.event.repository.name }}-container || true
+            docker run -d --name ${{ github.event.repository.name }}-container -p 80:80 ${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ github.event.repository.name }}-image:latest
+
+      # 清理指定项目的旧镜像
+      - name: Cleanup old images
+        run: |
+          REPO="${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ github.event.repository.name }}-image"
+          KEEP_TAG="latest"
+          OLD_IMAGES=$(docker images $REPO --format "{{.ID}} {{.Tag}}" | grep -v "$KEEP_TAG" | awk '{print $1}')
+          for IMAGE in $OLD_IMAGES
+          do
+            echo "Deleting image $IMAGE"
+            docker rmi $IMAGE
+          done
