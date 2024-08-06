@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main # 修改为你要触发 CI/CD 的分支
-
+# 测试
 env:
   REGISTRY: registry.cn-hangzhou.aliyuncs.com # 定义阿里云镜像仓库地址，可改成别的，如ghcr.io
   NAMESPACE: docker-images-lssh # 命名空间
