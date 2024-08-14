@@ -18,6 +18,7 @@ const MenuList: FunctionComponent<MenuListProps> = (props) => {
           onClick={() => {
             props.onClick(i.id);
           }}
+          key={i.name}
         >
           {i.name}
         </p>
