@@ -26,9 +26,7 @@ import MenuList from "./menu-list/menu-list";
 import IconList from "./IconList/IconList";
 import { produce } from "immer";
 import { LayerTypeEnum } from "./preview-module/previewLayers";
-import { Button } from "antd";
-import Test from "./test/Test";
-import BigFileUpload from "../func/BigFileUpload/BigFileUpload";
+import { currentFileChunks, generateFileHash } from "file-upload-tools";
 
 interface LayerDemoProps {}
 
@@ -158,40 +156,10 @@ const LayerDemo: FunctionComponent<LayerDemoProps> = () => {
     }
     return el;
   };
-  // useEffect(() => {
-  //   const incrementNum = () => {
-  //     const num = Number(localStorage.getItem("num") || 0);
-  //     localStorage.setItem("num", `${num + 1}`);
-  //     console.log(++iiii,'a');
-  //   };
-
-  //   const decrementNum = () => {
-  //     const num = Number(localStorage.getItem("num") || 0);
-  //     localStorage.setItem("num", `${num - 1}`);
-  //     console.log(--iiii,'b');
-  //   };
-
-  //   // 增加计数
-  //   incrementNum();
-
-  //   const handleTabClose = (evt) => {
-  //     // console.log("close", evt);
-  //     // requestAnimationFrame(decrementNum);
-  //     decrementNum();
-  //     console.log(1, evt);
-  //   };
-
-  //   window.addEventListener("beforeunload", handleTabClose);
-
-  //   return () => {
-  //     window.removeEventListener("beforeunload", handleTabClose);
-  //     handleTabClose(6); // 如果是组件卸载，这里也执行一次减法
-  //   };
-  // }, []);
 
   return (
     <div className="layer-demo">
-      {/* <div className="layer">
+      <div className="layer">
         <PreviewModule layers={previewLayersData}></PreviewModule>
       </div>
       <div className="data-view">
@@ -201,8 +169,7 @@ const LayerDemo: FunctionComponent<LayerDemoProps> = () => {
           onClick={setMenuListActiveId}
         ></MenuList>
         <div className="">{menuListView(currentMenu.name)}</div>
-      </div> */}
-      <BigFileUpload></BigFileUpload>
+      </div>
     </div>
   );
 };

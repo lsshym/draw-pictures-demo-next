@@ -1,0 +1,27 @@
+.modal-transform {
+  transition: transform 1s;
+  // perspective: 1000px; // 感觉没啥明显效果
+  position: relative;
+  transform-origin: 50% !important;
+
+  &.flipped{
+    transform: rotateY(180deg);
+  }
+  .flipper {
+    position: relative;
+    height: 300px;
+  }
+
+  .front,
+  .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    // backface-visibility: hidden; // 隐藏翻转后的背面内容
+
+  }
+
+  .back {
+    transform: rotateY(180deg);
+  }
+}

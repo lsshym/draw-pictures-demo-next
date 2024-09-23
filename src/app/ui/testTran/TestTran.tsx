@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { Transfer, Button, Modal, Table } from "antd";
-import "./FlipStyle.scss"; // 引入样式文件
+import "./TestTran.scss"; // 引入样式文件
+import useGetState from "../useGetState";
 
 const dataSource = [
   {
@@ -39,6 +40,15 @@ const columns = [
 const TransferExample = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [test, setTest] = useState(false);
+  const [value, setValue, getValue] = useGetState(true);
+  const handleAsync = async () => {
+    await handleAsync1()
+    console.log(0)
+
+  };
+  async function handleAsync1() {
+    await console.log(1)
+  }
 
   return (
     <div>
@@ -54,9 +64,10 @@ const TransferExample = () => {
         open={isModalOpen}
         footer={null}
         className={`modal-transform ${test ? "flipped" : ""}`}
+        onCancel={() => setIsModalOpen(false)} // 关闭 Modal 的控制
       >
         <div className="flipper">
-          <div className={`front`} style={{display:!test?'block':'none'}}>
+          <div className="front">
             <Transfer
               dataSource={[
                 {
@@ -79,13 +90,15 @@ const TransferExample = () => {
               render={(item) => item.title}
             />
           </div>
-          <div className="back" style={{display:test?'block':'none'}}>
+          <div className="back">
             <Table dataSource={dataSource} columns={columns} />
           </div>
         </div>
         <Button
           onClick={() => {
-            setTest(!test);
+            setValue(!value)
+            handleAsync()
+            setTest(!test); // 通过切换状态触发翻转
           }}
         >
           翻转
