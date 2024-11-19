@@ -23,15 +23,15 @@ importers:
       axios:
         specifier: ^1.7.4
         version: 1.7.4
-      file-upload-tools:
-        specifier: ^2.6.0
-        version: 2.6.0
       http-proxy-middleware:
         specifier: ^3.0.0
         version: 3.0.0
       immer:
         specifier: ^10.1.1
         version: 10.1.1
+      large-file-upload:
+        specifier: 3.3.1-5
+        version: 3.3.1-5
       next:
         specifier: 14.2.3
         version: 14.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)
@@ -366,9 +366,6 @@ packages:
   eventemitter3@4.0.7:
     resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}
 
-  file-upload-tools@2.6.0:
-    resolution: {integrity: sha512-DEvBVOvYpTcNSZ7sNFUBRYg9mjA8E7HdffK6ubfogLLBNlRslV+XDX+lqLwxzIpIfO9yTZVH+F4zIABFgvjWyQ==}
-
   fill-range@7.1.1:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
     engines: {node: '>=8'}
@@ -440,6 +437,9 @@ packages:
 
   json2mq@0.2.0:
     resolution: {integrity: sha512-SzoRg7ux5DWTII9J2qkrZrqV1gt+rTaoufMxEzXbS26Uid0NwaJd123HcoB80TgubEppxxIGdNxCx50fEoEWQA==}
+
+  large-file-upload@3.3.1-5:
+    resolution: {integrity: sha512-nWIy9SAogJi8SfjZa0mQmlspwyWmeEqNauOGjYI9dcJBx6KIVwvwLLHOf+Wri+rWa+hp2AtkzsSmB2Lg1C7bvg==}
 
   loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
@@ -923,6 +923,10 @@ packages:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
     engines: {node: '>=0.4'}
 
+  yocto-queue@1.1.1:
+    resolution: {integrity: sha512-b4JR1PFR10y1mKjhHY9LaGo6tmrgjit7hxVIeAmyMw3jegXR4dhYqLaQF5zMXZxY7tLpMyJeLjr1C4rLmkVe8g==}
+    engines: {node: '>=12.20'}
+
 snapshots:
 
   '@ant-design/colors@7.1.0':
@@ -1274,10 +1278,6 @@ snapshots:
 
   eventemitter3@4.0.7: {}
 
-  file-upload-tools@2.6.0:
-    dependencies:
-      hash-wasm: 4.11.0
-
   fill-range@7.1.1:
     dependencies:
       to-regex-range: 5.0.1
@@ -1345,6 +1345,11 @@ snapshots:
   json2mq@0.2.0:
     dependencies:
       string-convert: 0.2.1
+
+  large-file-upload@3.3.1-5:
+    dependencies:
+      hash-wasm: 4.11.0
+      yocto-queue: 1.1.1
 
   loose-envify@1.4.0:
     dependencies:
@@ -1856,3 +1861,5 @@ snapshots:
       utf-8-validate: 6.0.3
 
   xtend@4.0.2: {}
+
+  yocto-queue@1.1.1: {}
